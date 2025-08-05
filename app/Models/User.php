@@ -21,7 +21,7 @@
             'phone',
             'password',
             'address',
-            'role',
+            'role',// 0: user, 1: admin
             'user_add_id'
         ];
 
@@ -41,16 +41,20 @@
             'role' => 'integer',
         ];
 
-        /**
+           /**
          * Get a human-readable role (optional helper).
          */
         public function getRoleNameAttribute()
         {
             return match ($this->role) {
-                0 => 'Customer',
-                1 => 'Farmer',
-                2 => 'Admin',
+                0 => 'User',
+                1 => 'Admin',
                 default => 'Unknown',
             };
         }
+        public function added_by()
+    {
+        return $this->belongsTo(User::class, 'user_add_id');
+    }
+        
     }

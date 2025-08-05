@@ -38,7 +38,7 @@ class UserRequest extends FormRequest
             ],
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'user_add_id' => 'nullable|exists:userS,id',
+            'user_add_id' => 'nullable|exists:users,id',
             'role' => 'nullable|integer|between:0,2',
         ];
 

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->decimal('value', 10, 2);
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
-
             $table->timestamps();
         });
         Schema::table('offers', function (Blueprint $table) {

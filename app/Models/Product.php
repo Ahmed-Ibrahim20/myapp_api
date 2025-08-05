@@ -27,14 +27,14 @@ class Product extends Model
         'brand_id',
     ];
 
-    protected $casts = [
-        'price' => 'decimal:2',
-        'compare_price' => 'decimal:2',
-        'cost_price' => 'decimal:2',
-        'weight' => 'float',
-        'dimensions' => 'array',
-        'images' => 'array',
-    ];
+    // protected $casts = [
+    //     'price' => 'decimal:2',
+    //     'compare_price' => 'decimal:2',
+    //     'cost_price' => 'decimal:2',
+    //     'weight' => 'float',
+    //     'dimensions' => 'array',
+    //     'images' => 'string',
+    // ];
 
     // علاقة مع المستخدم الذي أضاف المنتج
     public function userAdd()
@@ -64,5 +64,9 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class, 'product_id');
     }
 }

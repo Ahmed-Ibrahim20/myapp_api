@@ -15,6 +15,7 @@ class Category extends Model
         'note',
         'image',
         'user_add_id',
+        'category_id',
     ];
 
     // علاقة مع المستخدم الذي أضاف القسم

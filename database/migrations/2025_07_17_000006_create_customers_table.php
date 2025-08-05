@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->unsignedBigInteger('user_add_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->timestamps(); 
         });
          Schema::table('customers', function (Blueprint $table) {
             $table->foreign('user_add_id')->references('id')->on('users')->onDelete('set null');

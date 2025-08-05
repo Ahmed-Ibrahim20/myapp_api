@@ -15,11 +15,12 @@ return [
     |
     */
 
-    'paths' => ['*'],
+
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => ['http://localhost:3000'], // لا تستخدم * عند credentials = true
 
     'allowed_origins_patterns' => [],
 
@@ -32,3 +33,5 @@ return [
     'supports_credentials' => true,
 
 ];
+
+
