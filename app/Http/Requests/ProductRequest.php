@@ -32,6 +32,8 @@ class ProductRequest extends FormRequest
                 Rule::unique('products')->ignore($productId),
             ],
             'description' => 'nullable|string',
+            'features' => 'nullable|string',
+            'details' => 'nullable|string',
             'price' => 'required|numeric',
             'compare_price' => 'nullable|numeric',
             'cost_price' => 'nullable|numeric',

@@ -31,6 +31,7 @@ class CategoryService
                 'name',
                 'slug',
                 'note',
+                'category_id',
                 'user_add_id'
             ]);
             $data['user_add_id'] = Auth::id();
@@ -80,6 +81,7 @@ class CategoryService
             $data = Arr::only($requestData, [
                 'name',
                 'slug',
+                'category_id',
                 'note'
             ]);
 

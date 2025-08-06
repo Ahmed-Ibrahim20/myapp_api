@@ -20,6 +20,8 @@ class Product extends Model
         'cost_price',
         'weight',
         'dimensions',
+        'features',
+        'details',
         'images',
         'user_add_id',
         'supplier_id',
