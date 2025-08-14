@@ -26,8 +26,11 @@ class ProductVariant extends Model
     }
 
     // علاقة مع القيم (VariantValue)
+
+
     public function values()
-    {
-        return $this->hasMany(VariantValue::class);
-    }
+{
+    return $this->hasMany(VariantValue::class, 'variant_id');
+}
+
 }

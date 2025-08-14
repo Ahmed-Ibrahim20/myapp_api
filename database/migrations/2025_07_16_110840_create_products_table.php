@@ -22,9 +22,11 @@ return new class extends Migration
             $table->decimal('compare_price', 10, 2)->nullable();
             $table->decimal('cost_price', 10, 2)->nullable();
             $table->float('weight')->nullable();
+            $table->integer('quantity')->nullable();
             $table->string('dimensions')->nullable(); // { length: cm, width: cm, height: cm }
             $table->string('images')->nullable();
-      cc
+            $table->text('details')->nullable();
+            $table->text('features')->nullable();
             $table->unsignedBigInteger('user_add_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();

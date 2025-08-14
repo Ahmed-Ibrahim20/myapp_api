@@ -81,23 +81,35 @@ class ProductService
             }
 
             // حفظ الفاريانت والقيم
-            if (!empty($requestData['variants'])) {
+            if (isset($requestData['variants']) && is_array($requestData['variants'])) {
+
                 foreach ($requestData['variants'] as $variant) {
                     $variantData = Arr::only($variant, ['name', 'type']);
                     $productVariant = $product->variants()->create($variantData);
-                    if (!empty($variant['values'])) {
+
+                    if (!empty($variant['values']) && is_array($variant['values'])) {
+                        $valuesData = [];
+
                         foreach ($variant['values'] as $value) {
-                            $productVariant->values()->create($value + ['product_id' => $product->id]);
+                            $valueData = Arr::only($value, ['value', 'color_name', 'image_name']);
+                            $valueData['product_id'] = $product->id;
+                            $valueData['variant_id'] = $productVariant->id;
+
+                            $valuesData[] = $valueData;
                         }
+
+                        $productVariant->values()->createMany($valuesData);
                     }
                 }
             }
+
+
 
             DB::commit();
             return [
                 'status' => true,
                 'message' => 'تم إنشاء المنتج بنجاح',
-               // 'data' => $product->load(['images', 'variants.values'])
+                // 'data' => $product->load(['images', 'variants.values'])
                 'data' => $product
             ];
         } catch (\Exception $e) {
@@ -215,32 +227,41 @@ class ProductService
     public function destroyProduct($id)
     {
         try {
-            $product = $this->model->find($id);
+            $product = $this->model->with(['images', 'variants.values'])->find($id);
+
             if (!$product) {
                 return [
                     'status' => false,
                     'message' => 'المنتج غير موجود'
                 ];
             }
-            // حذف الصورة الأساسية من المجلد
-            if ($product->images && file_exists(public_path($product->images))) {
-                @unlink(public_path($product->images));
+
+            // حذف الصورة الأساسية من المجلد (main_image بدل images)
+            if (!empty($product->main_image) && file_exists(public_path($product->main_image))) {
+                @unlink(public_path($product->main_image));
             }
+
             // حذف صور المنتج الفرعية من المجلد
-            foreach ($product->images as $img) {
-                if ($img->url && file_exists(public_path($img->url))) {
-                    @unlink(public_path($img->url));
+            if ($product->images && $product->images->count() > 0) {
+                foreach ($product->images as $img) {
+                    if (!empty($img->url) && file_exists(public_path($img->url))) {
+                        @unlink(public_path($img->url));
+                    }
                 }
+                $product->images()->delete();
             }
-            $product->images()->delete();
 
             // حذف الفاريانت والقيم
-            foreach ($product->variants as $variant) {
-                $variant->values()->delete();
+            if ($product->variants && $product->variants->count() > 0) {
+                foreach ($product->variants as $variant) {
+                    $variant->values()->delete();
+                }
+                $product->variants()->delete();
             }
-            $product->variants()->delete();
 
+            // حذف المنتج نفسه
             $product->delete();
+
             return [
                 'status' => true,
                 'message' => 'تم حذف المنتج بنجاح'
